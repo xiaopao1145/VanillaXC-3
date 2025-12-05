@@ -1,0 +1,56 @@
+name: Java CI with Gradle (Plugin Build)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    # 定义环境变数，便于统一管理
+    env:
+      JAVA_VERSION: '21'
+      GRADLE_BUILD_TASK: 'shadowJar' # 确保运行 shadowJar 任务来打包所有依赖
+
+    steps:
+    - name: ⬇️ Checkout Repository
+      # 检出代码
+      uses: actions/checkout@v4
+      
+    - name: ☕ Set up JDK ${{ env.JAVA_VERSION }}
+      # 设置 Java 21 环境 (与你的项目匹配)
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        cache: 'gradle' # 缓存 Gradle 依赖，提高速度
+
+    - name: ⚙️ Grant execute permission for gradlew
+      # 确保 gradlew 脚本有执行权限
+      run: chmod +x gradlew
+      
+    - name: 🔨 Build and Shade Plugin JAR
+      # 运行 shadowJar 任务生成包含依赖的 JAR
+      run: ./gradlew ${{ env.GRADLE_BUILD_TASK }}
+
+    # -----------------------------------------------------------
+    # 【核心步骤】上传构建工件 (Artifacts)
+    # -----------------------------------------------------------
+    - name: ⬆️ Upload Plugin Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        # 工件名称
+        name: VanillaXC3-Plugin-Artifact
+        
+        # 指定上传 build/libs/ 目录下的所有 JAR 文件
+        path: build/libs/*.jar
+        
+        # 设置工件的保留时间 (可选)
+        retention-days: 7
