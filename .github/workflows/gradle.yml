@@ -27,10 +27,12 @@ jobs:
 
     steps:
       - name: ⬇️ Checkout Repository | 检出代码仓库
-        uses: actions/checkout@v4
+        # 使用完整 SHA 值替换 @v4
+        uses: actions/checkout@b4ffde65f46336ab88eb5d329bb20d111d8c01af
 
       - name: ☕ Setup Java JDK ${{ env.JAVA_VERSION }} Environment | 配置 Java JDK ${{ env.JAVA_VERSION }} 环境
-        uses: actions/setup-java@v4
+        # 使用完整 SHA 值替换 @v4
+        uses: actions/setup-java@00688d088924f7b491950a417088b69ff2467d3d
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
@@ -55,11 +57,12 @@ jobs:
         # Only run this step if the previous build step was successful
         # 只有当前面的构建步骤成功后才执行上传
         if: success()
-        uses: actions/upload-artifact@v4
+        # 使用完整 SHA 值替换 @v4
+        uses: actions/upload-artifact@56986c7521e909a32c286595566c5d109f30b910
         with:
           # Artifact name
           # 工件名称
-          name: VanillaXC3-Plugin-Artifact
+          name: VanillaXC3-Artifact
 
           # Specify the path for all JAR files inside build/libs/
           # 指定上传 build/libs/ 目录下的所有 JAR 文件
