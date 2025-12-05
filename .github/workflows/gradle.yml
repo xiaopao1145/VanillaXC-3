@@ -26,13 +26,13 @@ jobs:
       GRADLE_BUILD_TASK: 'shadowJar'
 
     steps:
+      # 恢复到 @v4 标签，确保能找到 Action
       - name: ⬇️ Checkout Repository | 检出代码仓库
-        # 使用完整 SHA 值替换 @v4
-        uses: actions/checkout@b4ffde65f46336ab88eb5d329bb20d111d8c01af
+        uses: actions/checkout@v4
 
+      # 恢复到 @v4 标签，确保能找到 Action
       - name: ☕ Setup Java JDK ${{ env.JAVA_VERSION }} Environment | 配置 Java JDK ${{ env.JAVA_VERSION }} 环境
-        # 使用完整 SHA 值替换 @v4
-        uses: actions/setup-java@00688d088924f7b491950a417088b69ff2467d3d
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
@@ -53,12 +53,12 @@ jobs:
       # -----------------------------------------------------------
       # [Upload Artifacts] | 【上传工件】
       # -----------------------------------------------------------
+      # 恢复到 @v4 标签，确保能找到 Action
       - name: 📦 Upload Build Artifact (Plugin JAR) | 上传构建工件 (插件 JAR)
         # Only run this step if the previous build step was successful
         # 只有当前面的构建步骤成功后才执行上传
         if: success()
-        # 使用完整 SHA 值替换 @v4
-        uses: actions/upload-artifact@56986c7521e909a32c286595566c5d109f30b910
+        uses: actions/upload-artifact@v4
         with:
           # Artifact name
           # 工件名称
