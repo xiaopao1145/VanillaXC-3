@@ -7,7 +7,6 @@ public final class VanillaXC3 extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().info("[VanillaXC3] Enabled!");
 
     }
 
