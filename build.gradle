@@ -1,10 +1,11 @@
 plugins {
     id 'java'
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'io.VanillaX'
-version = '3.0.0-SNAPSHOT'
+version = '3.0.0-SNAPSHOT.beta5'
 
 repositories {
     mavenCentral()
@@ -14,25 +15,36 @@ repositories {
     }
 }
 
-// 服务器输出调试
-delete('D:\\VanillaXC-3\\.idea\\server\\plugins')
-jar { destinationDirectory.set (file ('D:\\VanillaXC-3\\build\\lib')) }
-jar { destinationDirectory.set (file ('D:\\VanillaXC-3\\.idea\\server\\plugins')) }
-
-
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
+    implementation 'org.tomlj:tomlj:1.1.1'
 }
 
 tasks {
+    // 1. 禁用默认的 jar 任务
+    jar {
+        enabled = false
+    }
+
+    // 2. 配置 shadowJar 任务（负责打包依赖）
+    shadowJar {
+        archiveFileName.set("${rootProject.name}-${archiveVersion.get()}.jar")
+        configurations = [project.configurations.runtimeClasspath]
+    }
+
+    // 让 'build' 任务依赖于 'shadowJar' 任务
+    build {
+        dependsOn shadowJar
+    }
+
+    // 配置 runServer 任务
     runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        dependsOn tasks.shadowJar // 确保在运行服务器前，JAR 已经生成
         minecraftVersion("1.21")
     }
 }
 
+// --- Java 版本配置 (保持不变) ---
 def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)

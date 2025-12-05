@@ -1,6 +1,17 @@
 name: VanillaXC
-version: '3.0.0-SNAPSHOT'
+version: '3.0.0-SNAPSHOT.beta5'
 main: io.VanillaX.vanillaXC3.VanillaXC3
 api-version: '1.21'
 authors: [ XiaoPao45 ]
 description: 123
+
+commands:
+  vanillac3:
+    description: 主命令，用于插件重载和管理。
+    usage: /<command> reload
+    permission: vanillac3.reload
+
+permissions:
+  vanillac3.reload:
+    description: 允许用户重新加载 VanillaXC3 插件配置。
+    default: op
