@@ -1,0 +1,6 @@
+name: VanillaXC
+version: '${version}'
+main: io.VanillaX.vanillaXC3.VanillaXC3
+api-version: '1.21'
+authors: [ XiaoPao45 ]
+description: 123
