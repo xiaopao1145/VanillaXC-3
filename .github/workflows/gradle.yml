@@ -1,59 +1,70 @@
-name: 🧩 VanillaXC3 CI/CD 构建
+name: 🧩 VanillaXC3 CI/CD 构建 (Build)
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  # Allow manual trigger
   # 允许手动触发
   workflow_dispatch:
 
 jobs:
   build:
+    # Use the latest Ubuntu runner environment
     # 使用最新的 Ubuntu 运行环境
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
-    # 定义构建相关的环境变数
+    # Define environment variables for consistency
+    # 定义构建相关的环境变数，便于统一管理
     env:
       JAVA_VERSION: '21'
-      # 使用 shadowJar 任务来打包所有依赖
+      # Ensure shadowJar task is run to package all dependencies
+      # 确保运行 shadowJar 任务来打包所有依赖
       GRADLE_BUILD_TASK: 'shadowJar'
 
     steps:
-      - name: ⬇️ 检出代码仓库
+      - name: ⬇️ Checkout Repository | 检出代码仓库
         uses: actions/checkout@v4
 
-      - name: ☕ 配置 Java JDK ${{ env.JAVA_VERSION }} 环境
+      - name: ☕ Setup Java JDK ${{ env.JAVA_VERSION }} Environment | 配置 Java JDK ${{ env.JAVA_VERSION }} 环境
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
+          # Cache Gradle dependencies for faster builds
           # 缓存 Gradle 依赖，提高构建速度
           cache: 'gradle'
 
-      - name: 🔐 授予 gradlew 脚本执行权限
+      - name: 🔐 Grant execute permission for gradlew | 授予 gradlew 脚本执行权限
+        # Ensure gradlew script has execute permission
         # 确保 gradlew 脚本有执行权限
         run: chmod +x gradlew
 
-      - name: ⚙️ 执行 Gradle 构建与依赖打包 (${{ env.GRADLE_BUILD_TASK }})
+      - name: ⚙️ Execute Gradle Build and Shading (${{ env.GRADLE_BUILD_TASK }}) | 执行 Gradle 构建与依赖打包
+        # Run the shadowJar task to generate the JAR with dependencies
         # 运行 shadowJar 任务生成包含依赖的 JAR
         run: ./gradlew ${{ env.GRADLE_BUILD_TASK }}
 
       # -----------------------------------------------------------
-      # 【上传工件】
+      # [Upload Artifacts] | 【上传工件】
       # -----------------------------------------------------------
-      - name: 📦 上传构建工件 (Plugin JAR)
+      - name: 📦 Upload Build Artifact (Plugin JAR) | 上传构建工件 (插件 JAR)
+        # Only run this step if the previous build step was successful
         # 只有当前面的构建步骤成功后才执行上传
         if: success()
         uses: actions/upload-artifact@v4
         with:
+          # Artifact name
           # 工件名称
-          name: VanillaXC3-Artifact
+          name: VanillaXC3-Plugin-Artifact
 
+          # Specify the path for all JAR files inside build/libs/
           # 指定上传 build/libs/ 目录下的所有 JAR 文件
           path: build/libs/*.jar
 
-          # 设置工件的保留时间为 7 天
+          # Set retention days to the maximum allowed (90 days for most users)
+          # 将工件保留日期设置为最大值 90 天
           retention-days: 90
