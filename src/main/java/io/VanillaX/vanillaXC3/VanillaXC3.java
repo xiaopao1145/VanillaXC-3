@@ -44,15 +44,15 @@ public class VanillaXC3 extends JavaPlugin {
 
         // banner
         boolean isDebugMode = pluginConfig.isDebugMode();
-        XLogger.getInstance().info("                                                              ");
-        XLogger.getInstance().info("&b__     __          _ _ _      &3__  ______  &c _____        ");
-        XLogger.getInstance().info("&b\\ \\   / /_ _ _ __ (_) | | __ _&3\\ \\/ / ___| &c|___ /    ");
-        XLogger.getInstance().info("&b \\ \\ / / _` | '_ \\| | | |/ _` |&3\\  / |     &c  |_ \\   ");
-        XLogger.getInstance().info("&b  \\ V / (_| | | | | | | | (_| |&3/  \\ |___  &c ___) |     ");
-        XLogger.getInstance().info("&b   \\_/ \\__,_|_| |_|_|_|_|\\__,_&3/_/\\_\\____| &c|____/   ");
-        XLogger.getInstance().info("                                                              ");
-        XLogger.getInstance().info("&eVanillaXC 3 - 加载成功！                                      ");
-        XLogger.getInstance().info("                                                              ");
+        XLogger.getInstance().info("");
+        XLogger.getInstance().info("&b__     __          _ _ _      &3__  ______  &c _____");
+        XLogger.getInstance().info("&b\\ \\   / /_ _ _ __ (_) | | __ _&3\\ \\/ / ___| &c|___ /");
+        XLogger.getInstance().info("&b \\ \\ / / _` | '_ \\| | | |/ _` |&3\\  / |     &c  |_ \\");
+        XLogger.getInstance().info("&b  \\ V / (_| | | | | | | | (_| |&3/  \\ |___  &c ___) |");
+        XLogger.getInstance().info("&b   \\_/ \\__,_|_| |_|_|_|_|\\__,_&3/_/\\_\\____| &c|____/");
+        XLogger.getInstance().info("");
+        XLogger.getInstance().info("&eVanillaXC 3 - 加载成功！");
+        XLogger.getInstance().info("");
         XLogger.getInstance().debug("您开启了debug模式，这是一条测试消息，无需理会~");
         XLogger.getInstance().debug("");
     }
